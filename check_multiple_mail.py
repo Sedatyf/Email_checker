@@ -27,7 +27,14 @@ def check_multiple_mail(username, password, number):
 							filename = part.get_filename()
 							if filename:
 								pwd = os.path.dirname(__file__)
-								filepath = os.path.join(pwd, filename)
+								attach_folder = os.path.join(pwd, "attachments")
+								
+								try:
+									os.mkdir(attach_folder)
+								except FileExistsError:
+									pass
+
+								filepath = os.path.join(attach_folder, filename)
 								open(filepath, "wb").write(part.get_payload(decode=True))
 
 	mail.close()
