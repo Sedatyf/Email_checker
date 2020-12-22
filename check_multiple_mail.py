@@ -35,9 +35,9 @@ def check_multiple_mail(username, password, number):
 
 if __name__ == "__main__":
 	#account credentials
-found = dotenv.find_dotenv('config.env')
-dotenv.load_dotenv(found)
-USERNAME = os.getenv('USERNAME')
-PASSWORD = os.getenv('PASSWORD')
+	found = dotenv.find_dotenv('config.env')
+	dotenv.load_dotenv(found)
+	USERNAME = os.getenv('USERNAME')
+	PASSWORD = os.getenv('PASSWORD')
 
-check_multiple_mail(USERNAME, PASSWORD, 6)
+	check_multiple_mail(USERNAME, PASSWORD, 6)
