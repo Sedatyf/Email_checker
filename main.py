@@ -14,6 +14,12 @@ parser.add_argument("-m", "--multiple", type=int, help="Allow you to check multi
 args = parser.parse_args()
 
 if args.search:
-	search_mail(USERNAME, PASSWORD, args.search)
+	order = input("Is this an old mail or a recent mail ? (O)ld / (R)ecent / (D)on't know? ")
+	if order.lower() in ["o","d"]:
+		search_mail(USERNAME, PASSWORD, args.search)
+	elif order.lower() == "r":
+		search_mail(USERNAME, PASSWORD, args.search, -1)
+	else:
+		print("Your answer must be O / R / D")
 elif args.multiple:
 	check_multiple_mail(USERNAME, PASSWORD, args.multiple)
