@@ -44,5 +44,6 @@ if __name__ == "__main__":
 	dotenv.load_dotenv(found)
 	USERNAME = os.getenv('USERNAME')
 	PASSWORD = os.getenv('PASSWORD')
+	IMAP = os.getenv('IMAP')
 
-	check_multiple_mail(USERNAME, PASSWORD, 6)
+	check_multiple_mail(USERNAME, PASSWORD, IMAP, 6)

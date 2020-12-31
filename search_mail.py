@@ -4,7 +4,6 @@ from email.header import decode_header
 import dotenv, os
 
 def search_mail(username, password, imap, mail_object, order=1):
-	print(imap)
 	found = False
 	mail = imaplib.IMAP4_SSL(imap)
 	mail.login(username, password)
@@ -55,6 +54,7 @@ def search_mail(username, password, imap, mail_object, order=1):
 
 		if found:
 			break
+
 	mail.close()
 	mail.logout()
 
@@ -64,5 +64,6 @@ if __name__ == "__main__":
 	dotenv.load_dotenv(found)
 	USERNAME = os.getenv('USERNAME')
 	PASSWORD = os.getenv('PASSWORD')
+	IMAP = os.getenv('IMAP')
 	
-	search_mail(USERNAME, PASSWORD, "RIB")
+	search_mail(USERNAME, PASSWORD, IMAP, "RIB")
