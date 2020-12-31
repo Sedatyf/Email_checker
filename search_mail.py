@@ -9,7 +9,7 @@ def search_mail(username, password, mail_object, order=1):
 	mail = imaplib.IMAP4_SSL("imap-mail.outlook.com")
 	mail.login(username, password)
 
-	status, messages = mail.select("INBOX")
+	_, messages = mail.select("INBOX")
 	total_mail = int(messages[0])
 	start = 1
 	end = total_mail + 1
@@ -34,7 +34,6 @@ def search_mail(username, password, mail_object, order=1):
 				
 				if subject == mail_object:
 					print("Mail found")
-					content_type = msg.get_content_type()
 			
 					if msg.is_multipart():
 						for part in msg.walk():
@@ -53,8 +52,7 @@ def search_mail(username, password, mail_object, order=1):
 									filepath = os.path.join(attach_folder, filename)
 									open(filepath, "wb").write(part.get_payload(decode=True))
 					found = True
-				else:
-					print("Mail does not match given subject")
+
 		if found:
 			break
 	mail.close()

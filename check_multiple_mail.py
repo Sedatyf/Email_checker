@@ -1,14 +1,13 @@
 import imaplib
 import email
 from email.header import decode_header
-from dotenv import load_dotenv
-import os
+import os, dotenv
 
 def check_multiple_mail(username, password, number):
 	mail = imaplib.IMAP4_SSL("imap-mail.outlook.com")
 	mail.login(username, password)
 
-	status, messages = mail.select("INBOX")
+	_, messages = mail.select("INBOX")
 	total_mail = int(messages[0])
 	N = number
 
@@ -18,7 +17,6 @@ def check_multiple_mail(username, password, number):
 		for response in msg:
 			if isinstance(response, tuple):
 				msg = email.message_from_bytes(response[1])
-				content_type = msg.get_content_type()
 			
 				if msg.is_multipart():
 					for part in msg.walk():
