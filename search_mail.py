@@ -32,7 +32,7 @@ def search_mail(username, password, imap, mail_object, order=1):
 						pass
 				
 				if subject == mail_object:
-					print("Mail found")
+					print("[+] Mail found")
 			
 					if msg.is_multipart():
 						for part in msg.walk():

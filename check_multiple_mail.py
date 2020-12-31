@@ -4,7 +4,8 @@ from email.header import decode_header
 import os, dotenv
 
 def check_multiple_mail(username, password, imap, number):
-	mail = imaplib.IMAP4_SSL("imap-mail.outlook.com")
+	attachments = 0
+	mail = imaplib.IMAP4_SSL(imap)
 	mail.login(username, password)
 
 	_, messages = mail.select("INBOX")
@@ -34,6 +35,9 @@ def check_multiple_mail(username, password, imap, number):
 
 								filepath = os.path.join(attach_folder, filename)
 								open(filepath, "wb").write(part.get_payload(decode=True))
+								attachments += 1
+	
+	print(f"[+] Downloaded {attachments} attachments from your mailbox")
 
 	mail.close()
 	mail.logout()
