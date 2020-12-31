@@ -3,7 +3,7 @@ import email
 from email.header import decode_header
 import os, dotenv
 
-def check_multiple_mail(username, password, number):
+def check_multiple_mail(username, password, imap, number):
 	mail = imaplib.IMAP4_SSL("imap-mail.outlook.com")
 	mail.login(username, password)
 

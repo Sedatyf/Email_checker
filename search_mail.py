@@ -1,12 +1,12 @@
 import imaplib
 import email
 from email.header import decode_header
-import dotenv
-import os
+import dotenv, os
 
-def search_mail(username, password, mail_object, order=1):
+def search_mail(username, password, imap, mail_object, order=1):
+	print(imap)
 	found = False
-	mail = imaplib.IMAP4_SSL("imap-mail.outlook.com")
+	mail = imaplib.IMAP4_SSL(imap)
 	mail.login(username, password)
 
 	_, messages = mail.select("INBOX")

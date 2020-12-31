@@ -7,6 +7,7 @@ found = dotenv.find_dotenv('config.env')
 dotenv.load_dotenv(found)
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
+IMAP = os.getenv('IMAP')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--search", type=str, help="Search for a specific mail")
@@ -16,10 +17,10 @@ args = parser.parse_args()
 if args.search:
 	order = input("Is this an old mail or a recent mail ? (O)ld / (R)ecent / (D)on't know? ")
 	if order.lower() in ["o","d"]:
-		search_mail(USERNAME, PASSWORD, args.search)
+		search_mail(USERNAME, PASSWORD, IMAP, args.search)
 	elif order.lower() == "r":
-		search_mail(USERNAME, PASSWORD, args.search, -1)
+		search_mail(USERNAME, PASSWORD, IMAP, args.search, -1)
 	else:
 		print("Your answer must be O / R / D")
 elif args.multiple:
-	check_multiple_mail(USERNAME, PASSWORD, args.multiple)
+	check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
