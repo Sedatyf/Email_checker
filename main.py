@@ -9,18 +9,19 @@ USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
 IMAP = os.getenv('IMAP')
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
 parser.add_argument("-s", "--search", type=str, help="Search for a specific mail")
+parser.add_argument("-a", "--age", type=str, choices=['o', 'r'], help="In the search context, precise if its an old mail or a recent mail")
 parser.add_argument("-m", "--multiple", type=int, help="Allow you to check multiple attachments")
 args = parser.parse_args()
 
 if args.search:
-	order = input("Is this an old mail or a recent mail ? (O)ld / (R)ecent / (D)on't know? ")
-	if order.lower() in ["o","d"]:
+	if args.age == "o":
 		search_mail(USERNAME, PASSWORD, IMAP, args.search)
-	elif order.lower() == "r":
+	elif args.age == "r":
 		search_mail(USERNAME, PASSWORD, IMAP, args.search, -1)
 	else:
-		print("Your answer must be O / R / D")
+		print(f"""[!!] In the search context, you have to precise if it's an old mail or a recent mail
+Example: python3 {os.path.basename(__file__)} -s \"Hello World\" -a r""")
 elif args.multiple:
 	check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
