@@ -1,6 +1,7 @@
 import dotenv, os, argparse
 from check_multiple_mail import check_multiple_mail
 from search_mail import search_mail
+import virustotal_requests as vt_r
 
 #account credentials
 found = dotenv.find_dotenv('config.env')
@@ -23,5 +24,8 @@ if args.search:
 	else:
 		print(f"""[!!] In the search context, you have to precise if it's an old mail or a recent mail
 Example: python3 {os.path.basename(__file__)} -s \"Hello World\" -a r""")
+
+	vt_r.analyse_file()
+	get_analysis("NWI5NGJmZTc4ZWFiOTFiYTE3OTczNTIyOGFiM2Y0OTg6MTYwOTUzMTU2NQ==")
 elif args.multiple:
 	check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
