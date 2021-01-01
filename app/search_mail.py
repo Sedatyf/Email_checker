@@ -17,6 +17,7 @@ def search_mail(username, password, imap, mail_object, order=1):
 		start = total_mail
 		end = 0
 	
+	print("[+] Searching your mail")
 	for i in range(start, end, order):
 		_, msg = mail.fetch(str(i), "(RFC822)")
 		
@@ -58,6 +59,9 @@ def search_mail(username, password, imap, mail_object, order=1):
 	mail.close()
 	mail.logout()
 
+	files = [os.path.abspath(os.path.join(attach_folder, f)) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
+	return files
+
 if __name__ == "__main__":
 	#account credentials
 	found = dotenv.find_dotenv('config.env')
@@ -66,4 +70,4 @@ if __name__ == "__main__":
 	PASSWORD = os.getenv('PASSWORD')
 	IMAP = os.getenv('IMAP')
 	
-	search_mail(USERNAME, PASSWORD, IMAP, "RIB")
+	search_mail(USERNAME, PASSWORD, IMAP, "RIB", -1)
