@@ -42,6 +42,9 @@ def check_multiple_mail(username, password, imap, number):
 	mail.close()
 	mail.logout()
 
+	files = [os.path.abspath(f) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
+	return files
+
 if __name__ == "__main__":
 	#account credentials
 	found = dotenv.find_dotenv('config.env')
