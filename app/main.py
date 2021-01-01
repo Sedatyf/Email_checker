@@ -18,14 +18,15 @@ args = parser.parse_args()
 
 if args.search:
 	if args.age == "o":
-		search_mail(USERNAME, PASSWORD, IMAP, args.search)
+		list_file = search_mail(USERNAME, PASSWORD, IMAP, args.search)
 	elif args.age == "r":
-		search_mail(USERNAME, PASSWORD, IMAP, args.search, -1)
+		list_file = search_mail(USERNAME, PASSWORD, IMAP, args.search, -1)
 	else:
 		print(f"""[!!] In the search context, you have to precise if it's an old mail or a recent mail
 Example: python3 {os.path.basename(__file__)} -s \"Hello World\" -a r""")
 
-	vt_r.analyse_file()
-	get_analysis("NWI5NGJmZTc4ZWFiOTFiYTE3OTczNTIyOGFiM2Y0OTg6MTYwOTUzMTU2NQ==")
 elif args.multiple:
-	check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
+	list_file = check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
+
+id_list = vt_r.analyse_file(list_file)
+vt_r.get_analysis(id_list)
