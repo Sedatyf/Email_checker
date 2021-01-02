@@ -10,11 +10,11 @@ headers = {'x-apikey': APIKEY}
 
 def analyse_file(file_list):
     print("[+] Sending your file to Virus Total")
-    id_list = []
-
     if len(file_list) > 4:
         print("[!!] You have to many files to send. API limit is 4")
     else:
+        id_list = []
+
         for attach in file_list:
             file_to_send = {'file': open(attach, 'rb')}
 
@@ -27,7 +27,7 @@ def analyse_file(file_list):
             id_list.append(id_file)
 
             print(f"[+] Your file {os.path.basename(attach)} has the following id: {id_file}")
-    
+
         return id_list
 
 
