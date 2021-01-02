@@ -2,13 +2,12 @@ import dotenv, os, argparse
 from check_multiple_mail import check_multiple_mail
 from search_mail import search_mail
 import virustotal_requests as vt_r
+import get_config
 
 #account credentials
-found = dotenv.find_dotenv('config.env')
-dotenv.load_dotenv(found)
-USERNAME = os.getenv('USERNAME')
-PASSWORD = os.getenv('PASSWORD')
-IMAP = os.getenv('IMAP')
+USERNAME = get_config.get_username()
+PASSWORD = get_config.get_password()
+IMAP = get_config.get_imap()
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
 parser.add_argument("-s", "--search", type=str, help="Search for a specific mail")

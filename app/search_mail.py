@@ -2,6 +2,7 @@ import imaplib
 import email
 from email.header import decode_header
 import dotenv, os
+import get_config
 
 def search_mail(username, password, imap, mail_object, order=1):
 	found = False
@@ -64,10 +65,8 @@ def search_mail(username, password, imap, mail_object, order=1):
 
 if __name__ == "__main__":
 	#account credentials
-	found = dotenv.find_dotenv('config.env')
-	dotenv.load_dotenv(found)
-	USERNAME = os.getenv('USERNAME')
-	PASSWORD = os.getenv('PASSWORD')
-	IMAP = os.getenv('IMAP')
+	USERNAME = get_config.get_username()
+	PASSWORD = get_config.get_password()
+	IMAP = get_config.get_imap()
 	
 	search_mail(USERNAME, PASSWORD, IMAP, "RIB", -1)

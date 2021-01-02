@@ -1,6 +1,7 @@
 import imaplib
 import email
 import os, dotenv
+import get_config
 
 def check_multiple_mail(username, password, imap, number):
 	attachments = 0
@@ -48,10 +49,8 @@ def check_multiple_mail(username, password, imap, number):
 
 if __name__ == "__main__":
 	#account credentials
-	found = dotenv.find_dotenv('config.env')
-	dotenv.load_dotenv(found)
-	USERNAME = os.getenv('USERNAME')
-	PASSWORD = os.getenv('PASSWORD')
-	IMAP = os.getenv('IMAP')
+	USERNAME = get_config.get_username()
+	PASSWORD = get_config.get_password()
+	IMAP = get_config.get_imap()
 
 	check_multiple_mail(USERNAME, PASSWORD, IMAP, 6)
