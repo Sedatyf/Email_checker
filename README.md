@@ -2,13 +2,16 @@
 
 ## Requirements
 
-You'll need to make a ``config.env`` file in the ``app`` folder in order to give private information about your account.
+You'll need an api key from VirusTotal in order to scan your file. You have to create an account in VirusTotal and then specify your key in the ``dotenv`` file as precised below.
+
+You'll need to make a ``config.env`` file in the root folder in order to give private information about your account.
 In this file you have to create three variables where those variables goes like this :
 
 ```env
 USERNAME=<your_email_address>
 PASSWORD=<your_email_password>
 IMAP=<your_imap>
+APIKEY=<your_virustotal_apikey>
 ```
 
 In the ``IMAP`` you have to give the right imap service along your mailbox (Gmail, Outlook, Yahoo, etc.). You can find a list of IMAP here : <https://www.systoolsgroup.com/imap/>

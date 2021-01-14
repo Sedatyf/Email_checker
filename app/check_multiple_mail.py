@@ -42,10 +42,8 @@ def check_multiple_mail(username, password, imap, number):
 	mail.close()
 	mail.logout()
 
-	return [
-	    os.path.abspath(f) for f in os.listdir(attach_folder)
-	    if os.path.isfile(os.path.join(attach_folder, f))
-	]
+	if attachments > 0:
+		return [os.path.join(attach_folder, f) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
 
 if __name__ == "__main__":
 	#account credentials
