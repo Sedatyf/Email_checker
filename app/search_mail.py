@@ -1,10 +1,11 @@
 import imaplib
 import email
 from email.header import decode_header
-import dotenv, os
+import dotenv, os, sys
 import get_config
 
 def search_mail(username, password, imap, mail_object, order=1):
+	attachments = 0
 	found = False
 	mail = imaplib.IMAP4_SSL(imap)
 	mail.login(username, password)
@@ -52,16 +53,20 @@ def search_mail(username, password, imap, mail_object, order=1):
 								
 									filepath = os.path.join(attach_folder, filename)
 									open(filepath, "wb").write(part.get_payload(decode=True))
+									attachments += 1
 					found = True
 
 		if found:
 			break
+	if not found:
+		print(f"[-] No mail found with subject {mail_object}. Stopping...")
+		sys.exit()
 
 	mail.close()
 	mail.logout()
 
-	files = [os.path.abspath(os.path.join(attach_folder, f)) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
-	return files
+	if attachments > 0:
+		return [os.path.join(attach_folder, f) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
 
 if __name__ == "__main__":
 	#account credentials
