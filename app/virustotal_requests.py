@@ -8,10 +8,12 @@ APIKEY = os.getenv("APIKEY")
 
 headers = {'x-apikey': APIKEY}
 
+project_folder = os.path.dirname(__file__)
+
 def analyse_file(file_list):
-    print("[+] Sending your file to Virus Total")
+    print("[*] Sending your file to Virus Total")
     if len(file_list) > 4:
-        print("[!!] You have to many files to send. API limit is 4")
+        print("[!!] You have to many files to send. API limit is 4 at a time")
     else:
         id_list = []
 
@@ -50,7 +52,18 @@ def get_analysis(id_list):
         
             stats = json.dumps(resp_dict['data']['attributes']['stats'], indent=4).replace('"', '').replace('}', '').replace('{', '').replace(',', '')
             current_file = os.path.basename(file_id)
-            print(f"[+] Results of your scan for {current_file}: {stats}")
+            print_results(id_list, current_file, stats)
+
+def print_results(id_list, current_file, stats):
+    if len(id_list) == 1:
+        print(f"[+] Results of your scan for {current_file}: {stats}")
+    elif len(id_list) > 1:
+        report_folder = os.path.join(project_folder, 'reports')
+        report_file = report_folder + current_file + '_report.txt'
+
+        os.mkdir(report_folder)
+        with open(report_file, 'w') as f:
+            f.write(f"[+] Results of your scan for {current_file}: {stats}")
 
 if __name__ == "__main__":
     some_file = ['/home/app/Email_checker/app/attachments/Chelou.pdf']

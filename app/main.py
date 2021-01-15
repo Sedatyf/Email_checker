@@ -1,4 +1,4 @@
-import dotenv, os, argparse
+import dotenv, os, argparse, sys
 from check_multiple_mail import check_multiple_mail
 from search_mail import search_mail
 import virustotal_requests as vt_r
@@ -27,5 +27,9 @@ Example: python3 {os.path.basename(__file__)} -s \"Hello World\" -a r""")
 elif args.multiple:
 	list_file = check_multiple_mail(USERNAME, PASSWORD, IMAP, args.multiple)
 
-id_list = vt_r.analyse_file(list_file)
-vt_r.get_analysis(id_list)
+	if not list_file is None:
+		id_list = vt_r.analyse_file(list_file)
+		vt_r.get_analysis(id_list)
+	else:
+		print("[!!] No file detected. Stopping...")
+		sys.exit()
