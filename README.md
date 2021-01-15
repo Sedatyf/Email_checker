@@ -15,3 +15,9 @@ APIKEY=<your_virustotal_apikey>
 ```
 
 In the ``IMAP`` you have to give the right imap service along your mailbox (Gmail, Outlook, Yahoo, etc.). You can find a list of IMAP here : <https://www.systoolsgroup.com/imap/>
+
+## TODO
+
+- Check if I can automate process from Thunderbird
+- Make a thunderbird init
+- Refactoring (guard clause, etc.)
