@@ -19,16 +19,26 @@ if [ ${app_choice,,}  == 'm' ]; then
     fi
 
     if [ $correct == 1 ]; then
-        # TODO : check if an image exists if not, build it from Dockerfile
-        docker run -e PYTHONUNBUFFERED=1 sedatyf/email_checker:latest -m $N
+        isImage=$(docker images)
+        if ! [[ $isImage == *"email_checker"* ]]; then
+            docker build -t email_checker .
+        else
+            echo "[+] Docker images is already build"
+        fi
+        docker run -e PYTHONUNBUFFERED=1 email_checker -m $N
     fi
 
 elif [ ${app_choice,,} == 's' ]; then
     echo "Script will check for a specific mail. What's the subject of your mail? "
     read subject
 
-    # TODO : check if an image exists if not, build it from Dockerfile
-    docker run -e PYTHONUNBUFFERED=1 sedatyf/email_checker:latest -s $subject -a r
+    isImage=$(docker images)
+        if ! [[ $isImage == *"email_checker"* ]]; then
+            docker build -t email_checker .
+        else
+            echo "[+] Docker images is already build"
+        fi
+    docker run -e PYTHONUNBUFFERED=1 email_checker -s $subject -a r
 else
     echo "Unkwown parameter"
 fi
