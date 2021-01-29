@@ -25,34 +25,33 @@ def search_mail(username, password, imap, mail_object, order=1):
 		
 		for response in msg:
 			if not isinstance(response, tuple):
-				raise Exception("Your email is not following RFC822 rules") from ValueError
-			
+				continue
 			msg = email.message_from_bytes(response[1])
 			subject, encoding = decode_header(msg["Subject"])[0]
 			if not isinstance(subject, bytes):
-				return
-
+				continue
+			
 			try:
 				subject = subject.decode(encoding)
 			except TypeError:
 				pass
 				
 			if subject != mail_object:
-				return
+				continue
 			print("[+] Mail found")
 			
 			if not msg.is_multipart():
-				return
+				continue
 			for part in msg.walk():
 				content_disposition = str(part.get("Content-Disposition"))
 				if not "attachment" in content_disposition:
-					return
+					continue
 				filename = part.get_filename()
 				if not filename:
-					return
+					continue
 				pwd = os.path.dirname(__file__)
 				attach_folder = os.path.join(pwd, "attachments")			
-			
+				os.mkdir(attach_folder)
 				filepath = os.path.join(attach_folder, filename)
 				open(filepath, "wb").write(part.get_payload(decode=True))
 				attachments += 1
