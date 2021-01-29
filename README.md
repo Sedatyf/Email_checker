@@ -20,6 +20,6 @@ In the ``IMAP`` you have to give the right imap service along your mailbox (Gmai
 
 - Check if I can automate process from Thunderbird (?)
   - Make a thunderbird init
-- ~~ Refactoring (guard clause, etc.) ~~
+- ~~Refactoring (guard clause, etc.)~~
 - Make some test to see if it's working perfectly (I'm sure it misses some email)
 - GUI?
