@@ -24,40 +24,43 @@ def search_mail(username, password, imap, mail_object, order=1):
 		_, msg = mail.fetch(str(i), "(RFC822)")
 		
 		for response in msg:
-			if isinstance(response, tuple):
-				msg = email.message_from_bytes(response[1])
-				
-				subject, encoding = decode_header(msg["Subject"])[0]
-				if isinstance(subject, bytes):
-					try:
-						subject = subject.decode(encoding)
-					except TypeError:
-						pass
-				
-				if subject == mail_object:
-					print("[+] Mail found")
+			if not isinstance(response, tuple):
+				raise Exception("Your email is not following RFC822 rules") from ValueError
 			
-					if msg.is_multipart():
-						for part in msg.walk():
-							content_disposition = str(part.get("Content-Disposition"))
-							if "attachment" in content_disposition:
-								filename = part.get_filename()
-								if filename:
-									pwd = os.path.dirname(__file__)
-									attach_folder = os.path.join(pwd, "attachments")
-								
-									try:
-										os.mkdir(attach_folder)
-									except FileExistsError:
-										pass
-								
-									filepath = os.path.join(attach_folder, filename)
-									open(filepath, "wb").write(part.get_payload(decode=True))
-									attachments += 1
-					found = True
+			msg = email.message_from_bytes(response[1])
+			subject, encoding = decode_header(msg["Subject"])[0]
+			if not isinstance(subject, bytes):
+				return
+
+			try:
+				subject = subject.decode(encoding)
+			except TypeError:
+				pass
+				
+			if subject != mail_object:
+				return
+			print("[+] Mail found")
+			
+			if not msg.is_multipart():
+				return
+			for part in msg.walk():
+				content_disposition = str(part.get("Content-Disposition"))
+				if not "attachment" in content_disposition:
+					return
+				filename = part.get_filename()
+				if not filename:
+					return
+				pwd = os.path.dirname(__file__)
+				attach_folder = os.path.join(pwd, "attachments")			
+			
+				filepath = os.path.join(attach_folder, filename)
+				open(filepath, "wb").write(part.get_payload(decode=True))
+				attachments += 1
+				found = True
 
 		if found:
 			break
+		
 	if not found:
 		print(f"[-] No mail found with subject {mail_object}. Stopping...")
 		sys.exit()
