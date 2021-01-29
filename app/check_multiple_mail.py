@@ -12,28 +12,29 @@ def check_multiple_mail(username, password, imap, number):
 	total_mail = int(messages[0])
 	N = number
 
+	pwd = os.path.dirname(__file__)
+	attach_folder = os.path.join(pwd, "attachments")
+	os.mkdir(attach_folder)
+
 	for i in range(total_mail, total_mail - N, -1):
 		_, msg = mail.fetch(str(i), "(RFC822)")
 
 		for response in msg:
 			if not isinstance(response, tuple):
-				raise Exception("Your email is not following RFC822 rules") from ValueError
+				continue
 			msg = email.message_from_bytes(response[1])
 
 			if not msg.is_multipart():
-				return
+				continue
 
 			for part in msg.walk():
 				content_disposition = str(part.get("Content-Disposition"))
 				if not "attachment" in content_disposition:
-					return
+					continue
 				
 				filename = part.get_filename()
 				if not filename:
-					return
-				pwd = os.path.dirname(__file__)
-				attach_folder = os.path.join(pwd, "attachments")
-				os.mkdir(attach_folder)
+					continue
 				
 				filepath = os.path.join(attach_folder, filename)
 				open(filepath, "wb").write(part.get_payload(decode=True))
