@@ -18,7 +18,7 @@ In the ``IMAP`` you have to give the right imap service along your mailbox (Gmai
 
 ## TODO
 
-- Change check multiple to check unseen
+- ~Change check multiple to check unseen~
 - Try some CI/CD pipeline
 - Check if I can automate process
   - From Thunderbird (?) : Make a thunderbird init

@@ -62,10 +62,3 @@ def print_results(id_list, current_file, stats):
         os.mkdir(report_folder)
         with open(report_file, 'w') as f:
             f.write(f"[+] Results of your scan for {current_file}: {stats}")
-
-if __name__ == "__main__":
-    some_file = ['/home/app/Email_checker/app/attachments/Chelou.pdf']
-    id_file = analyse_file(some_file)
-
-    some_id = ["ZGUxNjJmYzI4ZDRkOGVmY2M4YmViNWNiOWQ4ZjczY2M6MTYwOTU0MDU0OA=="]
-    get_analysis(some_id)
