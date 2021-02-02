@@ -24,7 +24,7 @@ elif [ ${app_choice,,} == 's' ]; then
         else
             echo "[+] Docker images is already build"
         fi
-    docker run -e PYTHONUNBUFFERED=1 email_checker -s $subject -a r
+    docker run -e PYTHONUNBUFFERED=1 email_checker -s $subject
 else
     echo "Unkwown parameter"
 fi
