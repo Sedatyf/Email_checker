@@ -14,3 +14,8 @@ def get_imap():
     found = dotenv.find_dotenv('config.env')
     dotenv.load_dotenv(found)
     return os.getenv('IMAP')
+
+def get_apikey():
+    found = dotenv.find_dotenv('config.env')
+    dotenv.load_dotenv(found)
+    return os.getenv("APIKEY")

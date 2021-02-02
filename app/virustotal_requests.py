@@ -1,10 +1,8 @@
 import requests, json
-import os, dotenv
-import time
+import os, time
+import get_config
 
-found = dotenv.find_dotenv('config.env')
-dotenv.load_dotenv(found)
-APIKEY = os.getenv("APIKEY")
+APIKEY = get_config.get_apikey()
 
 headers = {'x-apikey': APIKEY}
 
