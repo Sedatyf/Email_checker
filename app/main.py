@@ -1,5 +1,5 @@
 import os, argparse, sys
-from check_multiple_mail import check_unseen
+from check_unseen import check_unseen
 from search_mail import search_mail
 import virustotal_requests as vt_r
 import get_config
