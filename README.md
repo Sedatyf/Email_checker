@@ -18,8 +18,12 @@ In the ``IMAP`` you have to give the right imap service along your mailbox (Gmai
 
 ## TODO
 
-- Check if I can automate process from Thunderbird (?)
-  - Make a thunderbird init
+- Change check multiple to check unseen
+- Try some CI/CD pipeline
+- Check if I can automate process
+  - From Thunderbird (?) : Make a thunderbird init
+  - From Outlook/Gmail API (?)
+  - Other solutions ?
 - ~~Refactoring (guard clause, etc.)~~
-- Make some test to see if it's working perfectly (I'm sure it misses some email)
+- ~Make some test to see if it's working perfectly (I'm sure it misses some email)~
 - GUI?
