@@ -1,79 +1,41 @@
-import imaplib
-import email
-from email.header import decode_header
-import dotenv, os, sys
-import get_config
+import imapclient, pyzmail
+import os, sys
 
-def search_mail(username, password, imap, mail_object, order=1):
-	attachments = 0
-	found = False
-	mail = imaplib.IMAP4_SSL(imap)
-	mail.login(username, password)
+pwd = os.path.dirname(__file__)
+attach_folder = os.path.join(pwd, "attachments")
 
-	_, messages = mail.select("INBOX")
-	total_mail = int(messages[0])
-	start = 1
-	end = total_mail + 1
-	
-	if order == -1:
-		start = total_mail
-		end = 0
-	
-	print("[+] Searching your mail")
-	for i in range(start, end, order):
-		_, msg = mail.fetch(str(i), "(RFC822)")
-		
-		for response in msg:
-			if not isinstance(response, tuple):
-				continue
-			msg = email.message_from_bytes(response[1])
-			subject, encoding = decode_header(msg["Subject"])[0]
-			if not isinstance(subject, bytes):
-				continue
-			
-			try:
-				subject = subject.decode(encoding)
-			except TypeError:
-				pass
-				
-			if subject != mail_object:
-				continue
-			print("[+] Mail found")
-			
-			if not msg.is_multipart():
-				continue
-			for part in msg.walk():
-				content_disposition = str(part.get("Content-Disposition"))
-				if not "attachment" in content_disposition:
-					continue
-				filename = part.get_filename()
-				if not filename:
-					continue
-				pwd = os.path.dirname(__file__)
-				attach_folder = os.path.join(pwd, "attachments")			
-				os.mkdir(attach_folder)
-				filepath = os.path.join(attach_folder, filename)
-				open(filepath, "wb").write(part.get_payload(decode=True))
-				attachments += 1
-				found = True
+def search_mail(username, password, imap, subject):
+	imapObj = imapclient.IMAPClient(imap, ssl=True)
+	imapObj.login(username, password)
+	print(f"[+] You are connected as {username}")
 
-		if found:
-			break
-		
-	if not found:
-		print(f"[-] No mail found with subject {mail_object}. Stopping...")
+	imapObj.select_folder('INBOX', readonly=True)
+    
+	print(f"[*] Looking for mail with the subject: {subject}")
+	UID = imapObj.search(['SUBJECT', subject])
+	if UID:
+		print("[+] Mail found")
+	else:
+		print(f"[-] No mail found with the subject: {subject}\nExiting...")
 		sys.exit()
 
-	mail.close()
-	mail.logout()
+	rawMessages = imapObj.fetch([UID[0]], ['BODY[]', 'FLAGS'])
+	message = pyzmail.PyzMessage.factory(rawMessages[UID[0]][b'BODY[]'])
 
-	if attachments > 0:
-		return [os.path.join(attach_folder, f) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]
+	for mailpart in message.mailparts:
+		name = mailpart.filename
+		if name is None:
+			continue
 
-if __name__ == "__main__":
-	#account credentials
-	USERNAME = get_config.get_username()
-	PASSWORD = get_config.get_password()
-	IMAP = get_config.get_imap()
+		print(f"[+] Downloading attachment: {name}")
+		payload = mailpart.get_payload()
+		path = os.path.join(attach_folder, name)
+		os.mkdir(attach_folder)
+		open(path, 'wb').write(payload)
 	
-	search_mail(USERNAME, PASSWORD, IMAP, "RIB", -1)
+	if not os.path.exists(attach_folder):
+		print(f"[-] No attachment found for mail with subject \"{subject}\"\nExiting...")
+		sys.exit()
+
+	if len(os.listdir(attach_folder)) > 0:
+		return [os.path.join(attach_folder, f) for f in os.listdir(attach_folder) if os.path.isfile(os.path.join(attach_folder, f))]

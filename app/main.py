@@ -26,7 +26,7 @@ if args.search:
 			sys.exit()
 
 	elif args.age == "r":
-		list_file = search_mail(USERNAME, PASSWORD, IMAP, ' '.join(args.search), -1)
+		list_file = search_mail(USERNAME, PASSWORD, IMAP, ' '.join(args.search))
 		if not list_file is None:
 			id_list = vt_r.analyse_file(list_file)
 			vt_r.get_analysis(id_list)
