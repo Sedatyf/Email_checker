@@ -1,10 +1,6 @@
 echo "Do you want to (S)earch a specific mail or check (M)ultiple mail? (S/M) "
 read app_choice
 
-USERNAME=$(grep USERNAME config.env | cut -d '=' -f2)
-PASSWORD=$(grep PASSWORD config.env | cut -d '=' -f2)
-IMAP=$(grep IMAP config.env | cut -d '=' -f2)
-
 if [ ${app_choice,,}  == 'm' ]; then
     isImage=$(docker images)
     if ! [[ $isImage == *"email_checker"* ]]; then
