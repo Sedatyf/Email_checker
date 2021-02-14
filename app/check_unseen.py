@@ -32,7 +32,9 @@ def check_unseen(username, password, imap):
             print(f"[+] Downloading attachment: {name}")
             payload = mailpart.get_payload()
             path = os.path.join(attach_folder, name)
-            os.mkdir(attach_folder)
+            
+            if not os.path.exists(attach_folder):
+                os.mkdir(attach_folder)
             open(path, 'wb').write(payload)
         
     if not os.path.exists(attach_folder):
