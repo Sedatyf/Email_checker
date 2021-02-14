@@ -8,7 +8,16 @@ if [ ${app_choice,,}  == 'm' ]; then
     else
         echo "[+] Docker images is already build"
     fi
-    docker run -e PYTHONUNBUFFERED=1 email_checker -m
+
+    echo "Do you want to save your report as a file? Y/N "
+    read report_choice
+    if [ $report_choice == 'y' ]; then
+        docker run -e PYTHONUNBUFFERED=1 email_checker -m -r
+        docker_id=$(docker ps -aqf ancestor=email_checker:latest)
+        docker cp $docker_id:/Email_checker/app/reports /tmp
+    else
+        docker run -e PYTHONUNBUFFERED=1 email_checker -m
+    fi
 
 elif [ ${app_choice,,} == 's' ]; then
     echo "Script will check for a specific mail. What's the subject of your mail? "

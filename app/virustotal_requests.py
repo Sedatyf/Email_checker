@@ -1,17 +1,31 @@
 import requests, json
 import os, time
-import get_config
+import get_config, getpass
 
 APIKEY = get_config.get_apikey()
 
 headers = {'x-apikey': APIKEY}
 
 project_folder = os.path.dirname(__file__)
+report_folder = os.path.join(project_folder, 'reports')
 
-def handle_attachments(file_list):
-    for attach in file_list:
-        id_file = send_file(attach)
-        get_analysis(id_file)
+def handle_attachments(file_list, report='n'):
+    if report.lower() == 'n':
+        for attach in file_list:
+            id_file = send_file(attach)
+            get_analysis(id_file[1])
+
+    elif report.lower() == 'y':
+        os.mkdir(report_folder)
+        for attach in file_list:
+            id_file = send_file(attach)
+            stats = get_analysis(id_file[1])
+
+            report_file = id_file[0] + '_report.txt'
+            report_path = os.path.join(report_folder, report_file) 
+            with open(report_path, 'w') as f:
+                f.write(f"[+] Results of your scan for {stats[1]}: {stats[0]}")
+        print("Your reports have been printed in /tmp/reports/")
 
 def send_file(attach):
     print(f"[*] Sending your file {attach} to VirusTotal")
@@ -27,7 +41,7 @@ def send_file(attach):
 
     print(f"[+] Your file {os.path.basename(attach)} has the following id: {id_file}")
 
-    return id_file
+    return os.path.basename(attach), id_file
 
 
 def get_analysis(id_file):
@@ -48,7 +62,9 @@ def get_analysis(id_file):
         
         stats = json.dumps(resp_dict['data']['attributes']['stats'], indent=4).replace('"', '').replace('}', '').replace('{', '').replace(',', '')
         current_file = os.path.basename(id_file)
-        print(f"[+] Results of your scan for {current_file}: {stats}")
+        print_results(current_file, stats)
+    
+    return stats, current_file
 
-def print_results(id_list, current_file, stats):
+def print_results(current_file, stats):
     print(f"[+] Results of your scan for {current_file}: {stats}")
