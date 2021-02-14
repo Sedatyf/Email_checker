@@ -24,7 +24,7 @@ There is no needed dependencies as everything is running in a docker container. 
 
 ## Getting started
 
-All you have to do is meet the requirements precised below and then run the ``user_init.sh`` bash script. You'll be prompted information, follow them and everything should run perfectly
+All you have to do is meet the requirements precised below and then run the ``user_init.sh`` bash script as sudo (unless you added your user in the docker group). You'll be prompted information, follow them and everything should run perfectly
 
 ## TODO
 
