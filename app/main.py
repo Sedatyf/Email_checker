@@ -17,8 +17,7 @@ args = parser.parse_args()
 if args.search:
 	list_file = search_mail(USERNAME, PASSWORD, IMAP, ' '.join(args.search))
 	if not list_file is None:
-		id_list = vt_r.analyse_file(list_file)
-		vt_r.get_analysis(id_list)
+		vt_r.handle_attachments(list_file)
 	else:
 		print("[!!] No file detected. Stopping...")
 		sys.exit()
@@ -27,8 +26,7 @@ elif args.multiple:
 	list_file = check_unseen(USERNAME, PASSWORD, IMAP)
 
 	if not list_file is None:
-		id_list = vt_r.analyse_file(list_file)
-		vt_r.get_analysis(id_list)
+		vt_r.handle_attachments(list_file)
 	else:
 		print("[!!] No file detected. Stopping...")
 		sys.exit()
