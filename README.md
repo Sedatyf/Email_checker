@@ -2,6 +2,10 @@
 
 ## Requirements
 
+### Distribution
+
+This script works only on Linux. It was easier to install and deploy docker on Linux rather than Windows. 
+
 ### Credentials and config.env
 
 You'll need an api key from VirusTotal in order to scan your file. You have to create an account in VirusTotal and then specify your key in the ``dotenv`` file as precised below.
@@ -21,19 +25,8 @@ In the ``IMAP`` you have to give the right imap service along your mailbox (Gmai
 ### Dependencies
 
 There is no needed dependencies as everything is running in a docker container. You'll need at least to install docker engine in your computer in order to build docker image
+The docker image will be installed automatically if you run ``user_init.sh``.
 
 ## Getting started
 
 All you have to do is meet the requirements precised below and then run the ``user_init.sh`` bash script as sudo (unless you added your user in the docker group). You'll be prompted information, follow them and everything should run perfectly
-
-## TODO
-
-- ~Change check multiple to check unseen~
-- Try some CI/CD pipeline
-- Check if I can automate process
-  - From Thunderbird (?) : Make a thunderbird init
-  - From Outlook/Gmail API (?)
-  - Other solutions ?
-- ~~Refactoring (guard clause, etc.)~~
-- ~Make some test to see if it's working perfectly (I'm sure it misses some email)~
-- GUI?
