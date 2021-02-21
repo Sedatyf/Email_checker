@@ -1,4 +1,8 @@
+# env files
 *.env
+venv/
+*.cfg
+
 __pycache__/
 attachments/
 
